@@ -5,11 +5,18 @@ import FormPage from "./views/FormPage";
 import DetailsPage from "./views/DetailsPage";
 import { routes } from "./routes";
 import { AppContext } from "./context";
+import axios from "axios";
 
 export default class App extends Component {
 	state = {
+		offers: [],
+		offersLoading: true,
 		isNavOpen: false,
 	};
+
+	componentDidMount() {
+		this.getAllOffers();
+	}
 
 	toggleNav = () => {
 		this.setState((prevState) => ({ isNavOpen: !prevState.isNavOpen }));
@@ -17,6 +24,19 @@ export default class App extends Component {
 
 	closeNav = () => {
 		this.setState({ isNavOpen: false });
+	};
+
+	getAllOffers = () => {
+		axios
+			.get("/api/offers")
+			.then((res) => {
+				console.log(res.data);
+				this.setState({
+					offers: res.data,
+					offersLoading: false,
+				});
+			})
+			.catch((err) => console.log(err));
 	};
 
 	render() {

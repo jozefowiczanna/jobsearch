@@ -92,7 +92,7 @@ export const fields = [
 	},
 	{
 		label: "Mile widziane",
-		name: "additionalSkills",
+		name: "addSkills",
 		tag: "textarea",
 	},
 	{

@@ -25,3 +25,63 @@
 .radio-button {
 	margin-right: 8px;
 }
+// offer status
+.button--status {
+	padding: 0 !important;
+	width: 20px !important;
+	height: 20px !important;
+	margin: 5px 0 !important;
+}
+
+// table
+.circle {
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	position: relative;
+	left: 0px;
+
+	&::before,
+	&::after {
+		display: block;
+		content: "";
+		position: absolute;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	&::before {
+		left: 14px;
+	}
+
+	&::after {
+		left: 28px;
+	}
+}
+
+.circle.junior {
+	background-color: black;
+}
+
+.circle.mid {
+	background-color: black;
+
+	&::before {
+		background-color: black;
+	}
+}
+
+.circle.senior {
+	background-color: black;
+
+	&::before,
+	&::after {
+		background-color: black;
+	}
+}
+
+.table--custom td {
+	vertical-align: middle !important;
+}

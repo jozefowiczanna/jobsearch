@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// const { user, score } = require("../controllers");
+const { offer } = require("../controllers");
 
-// router.get("/scores", score.getAllScores)
-
-router.get("/test", (req, res) => {
-	return res.send("Testing route");
-});
+router.get("/offers", offer.getAllOffers);
+router.get("/offers/:id", offer.getOffer);
+router.post("/offers", offer.addOffer);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FormField from "./FormField/FormField";
 import { fields } from "../../assets/data/jobOfferFormFields";
+import axios from "axios";
 
 export default class Form extends Component {
 	state = {
@@ -13,7 +14,7 @@ export default class Form extends Component {
 			techStack: "",
 			description: "",
 			skills: "",
-			additionalSkills: "",
+			addSkills: "",
 			offer: "",
 			payScales: "",
 			deadline: "",
@@ -31,7 +32,10 @@ export default class Form extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(this.state.values);
+		axios.post("/api/offers", this.state.values).then((res) => {
+			console.log(res.data);
+			// redirect do strony z ogłoszeniem
+		});
 	};
 
 	render() {
