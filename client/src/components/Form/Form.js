@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import FormField from "./FormField/FormField";
 import { fields } from "../../assets/data/jobOfferFormFields";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 export default class Form extends Component {
 	state = {
@@ -22,7 +24,26 @@ export default class Form extends Component {
 			level: "junior",
 			status: "notSent",
 		},
+		offer: {},
+		loading: true,
+		isModalOpen: false,
 	};
+
+	componentDidMount() {
+		if (this.props.type === "Add") return;
+		axios
+			.get(`/api/offers/${this.props.id}`)
+			.then((res) => {
+				const values = { ...this.state.values };
+				Object.entries(res.data).forEach(([key, value]) => {
+					if (values.hasOwnProperty(key)) {
+						values[key] = value;
+					}
+				});
+				this.setState({ values, loading: false });
+			})
+			.catch((err) => console.log(err));
+	}
 
 	handleChange = (e) => {
 		const values = { ...this.state.values };
@@ -32,10 +53,21 @@ export default class Form extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		axios.post("/api/offers", this.state.values).then((res) => {
-			console.log(res.data);
-			// redirect do strony z ogłoszeniem
-		});
+		if (this.props.type === "Add") {
+			axios.post("/api/offers", this.state.values).then((res) => {
+				// redirect do strony z ogłoszeniem
+			});
+			return;
+		}
+		this.openModal();
+	};
+
+	openModal = () => {
+		this.setState({ isModalOpen: true });
+	};
+
+	closeModal = () => {
+		this.setState({ isModalOpen: false });
 	};
 
 	render() {
@@ -58,11 +90,21 @@ export default class Form extends Component {
 			);
 		});
 
+		if (this.state.loading) {
+			return <p>Offer is loading...</p>;
+		}
+
 		return (
-			<form className="form form--custom" onSubmit={this.handleSubmit}>
-				{formFields}
-				<button className="button is-link mt-4">{this.props.type}</button>
-			</form>
+			<>
+				<form className="form form--custom" onSubmit={this.handleSubmit}>
+					{formFields}
+					<button className="button is-link mt-4">{this.props.type}</button>
+				</form>
+				<Modal
+					closeModal={this.closeModal}
+					isModalOpen={this.state.isModalOpen}
+				/>
+			</>
 		);
 	}
 }

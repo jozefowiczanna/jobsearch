@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import ReactTooltip from "react-tooltip";
@@ -52,9 +53,6 @@ export default function DetailsPage(props) {
 				<p>Offer not found.</p>
 			</Layout>
 		);
-	}
-
-	if (offer._id) {
 	}
 
 	return (
@@ -117,7 +115,9 @@ export default function DetailsPage(props) {
 				<p className="title is-5 mt-5">Uwagi:</p>
 				<p>{offer.remarks}</p>
 				<div>
-					<button className="button is-small is-link">Edit</button>
+					<Link to={`/offers/details/${offer._id}/edit`}>
+						<button className="button is-small is-link">Edit</button>
+					</Link>
 					<button className="button is-small is-dark ml-3">Delete</button>
 				</div>
 			</div>

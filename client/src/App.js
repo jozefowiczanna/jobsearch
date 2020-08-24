@@ -30,7 +30,6 @@ export default class App extends Component {
 		axios
 			.get("/api/offers")
 			.then((res) => {
-				console.log(res.data);
 				this.setState({
 					offers: res.data,
 					offersLoading: false,
