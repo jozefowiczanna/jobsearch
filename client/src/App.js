@@ -8,74 +8,75 @@ import { AppContext } from "./context";
 import axios from "axios";
 
 export default class App extends Component {
-	state = {
-		offers: [],
-		offersLoading: true,
-		isNavOpen: false,
-	};
+  state = {
+    offers: [],
+    offersLoading: true,
+    isNavOpen: false,
+  };
 
-	componentDidMount() {
-		this.getAllOffers();
-	}
+  componentDidMount() {
+    this.getAllOffers();
+  }
 
-	toggleNav = () => {
-		this.setState((prevState) => ({ isNavOpen: !prevState.isNavOpen }));
-	};
+  toggleNav = () => {
+    this.setState((prevState) => ({ isNavOpen: !prevState.isNavOpen }));
+  };
 
-	closeNav = () => {
-		this.setState({ isNavOpen: false });
-	};
+  closeNav = () => {
+    this.setState({ isNavOpen: false });
+  };
 
-	getAllOffers = () => {
-		axios
-			.get("/api/offers")
-			.then((res) => {
-				this.setState({
-					offers: res.data,
-					offersLoading: false,
-				});
-			})
-			.catch((err) => console.log(err));
-	};
+  getAllOffers = () => {
+    axios
+      .get("/api/offers")
+      .then((res) => {
+        this.setState({
+          offers: res.data,
+          offersLoading: false,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
 
-	render() {
-		const { toggleNav, closeNav } = this;
-		const contextValue = {
-			state: { ...this.state },
-			toggleNav,
-			closeNav,
-		};
+  render() {
+    const { toggleNav, closeNav, getAllOffers } = this;
+    const contextValue = {
+      state: { ...this.state },
+      toggleNav,
+      closeNav,
+      getAllOffers,
+    };
 
-		return (
-			<AppContext.Provider value={contextValue}>
-				<Router>
-					<Route
-						exact
-						path="/"
-						render={() => <Redirect to={routes.offers} />}
-					/>
-					<Route
-						exact
-						path={routes.offers}
-						render={(props) => <OffersPage {...props} />}
-					/>
-					<Route
-						exact
-						path={routes.offer}
-						render={(props) => <DetailsPage {...props} />}
-					/>
-					<Route
-						exact
-						path={routes.addOffer}
-						render={(props) => <FormPage {...props} />}
-					/>
-					<Route
-						exact
-						path={routes.editOffer}
-						render={(props) => <FormPage {...props} />}
-					/>
-				</Router>
-			</AppContext.Provider>
-		);
-	}
+    return (
+      <AppContext.Provider value={contextValue}>
+        <Router>
+          <Route
+            exact
+            path="/"
+            render={() => <Redirect to={routes.offers} />}
+          />
+          <Route
+            exact
+            path={routes.offers}
+            render={(props) => <OffersPage {...props} />}
+          />
+          <Route
+            exact
+            path={routes.offer}
+            render={(props) => <DetailsPage {...props} />}
+          />
+          <Route
+            exact
+            path={routes.addOffer}
+            render={(props) => <FormPage {...props} />}
+          />
+          <Route
+            exact
+            path={routes.editOffer}
+            render={(props) => <FormPage {...props} />}
+          />
+        </Router>
+      </AppContext.Provider>
+    );
+  }
 }
