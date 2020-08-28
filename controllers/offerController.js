@@ -9,7 +9,6 @@ const offer = {
     Object.entries(req.body).forEach(([key, value]) => {
       offerObj[key] = value.trim();
     });
-    console.log(offerObj);
     const newOffer = new Offer(offerObj);
     newOffer
       .save()
@@ -21,6 +20,7 @@ const offer = {
   },
   getAllOffers: (req, res) => {
     Offer.find({})
+      .sort({ createdDate: -1 })
       .then((offers) => {
         return res.status(200).json(offers);
       })
@@ -62,7 +62,6 @@ const offer = {
             console.log(err);
             return res.status(500).json(error500);
           });
-        return res.status(200).json(offer);
       })
       .catch((err) => {
         console.log(err);
@@ -70,6 +69,14 @@ const offer = {
         if (err.name === "CastError") {
           return res.status(404).json(error404);
         }
+        return res.status(500).json(error500);
+      });
+  },
+  deleteOffer: (req, res) => {
+    Offer.findOneAndRemove({ _id: req.params.id })
+      .then((offer) => res.status(200).json(offer))
+      .catch((err) => {
+        console.log(err);
         return res.status(500).json(error500);
       });
   },

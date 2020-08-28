@@ -3,12 +3,16 @@ import styles from "./Nav.module.scss";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 import { AppContext } from "../../context";
+import folderIcon from "../../assets/icons/folder.svg";
 
 export default function Nav() {
   const context = useContext(AppContext);
 
   return (
     <div>
+      <Link to="/">
+        <img className={styles.folderIcon} src={folderIcon} alt="folder icon" />
+      </Link>
       <button
         className={cx(styles.hamburger, {
           [styles.hamburgerActive]: context.state.isNavOpen,
